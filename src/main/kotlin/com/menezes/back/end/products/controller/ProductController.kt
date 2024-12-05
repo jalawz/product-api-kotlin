@@ -1,6 +1,7 @@
 package com.menezes.back.end.products.controller
 
 import com.menezes.back.end.products.service.ProductService
+import com.menezes.backend.client.dto.ProductDTO
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
