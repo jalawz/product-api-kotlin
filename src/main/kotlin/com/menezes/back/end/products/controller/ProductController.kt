@@ -1,6 +1,5 @@
 package com.menezes.back.end.products.controller
 
-import com.menezes.back.end.products.dto.ProductDTO
 import com.menezes.back.end.products.service.ProductService
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
@@ -49,7 +48,7 @@ class ProductController(
         val product = productService.saveProduct(dto)
         val location =
             ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("{/id}")
+                .path("/{id}")
                 .buildAndExpand(product.productIdentifier)
                 .toUri()
         return ResponseEntity.created(location).body(product)

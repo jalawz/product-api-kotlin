@@ -18,6 +18,9 @@ java {
 
 repositories {
     mavenCentral()
+    maven {
+        url = uri("file:///home/paulo/training/shopping_client/build/repo")
+    }
 }
 
 ktlint {
@@ -39,6 +42,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    implementation("com.menezes.backend.client:shopping_client:1.0-SNAPSHOT")
 }
 
 kotlin {

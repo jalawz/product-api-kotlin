@@ -1,9 +1,10 @@
 package com.menezes.back.end.products.service
 
-import com.menezes.back.end.products.dto.ProductDTO
+import com.menezes.back.end.products.converter.DTOConverter
 import com.menezes.back.end.products.exceptions.ProductNotFoundException
 import com.menezes.back.end.products.model.Product
 import com.menezes.back.end.products.repository.ProductRepository
+import com.menezes.backend.client.dto.ProductDTO
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -12,11 +13,11 @@ import org.springframework.stereotype.Service
 class ProductService(
     private val productRepository: ProductRepository,
 ) {
-    fun getAllProducts() = productRepository.findAll().map { product -> ProductDTO.convert(product) }
+    fun getAllProducts() = productRepository.findAll().map { product -> DTOConverter.convert(product) }
 
     fun getProductByCategoryId(categoryId: Long): List<ProductDTO> {
         return productRepository.getProductByCategory(categoryId)
-            .map { ProductDTO.convert(it) }
+            .map { DTOConverter.convert(it) }
     }
 
     fun findByProductIdentifier(productIdentifier: String): ProductDTO {
@@ -24,12 +25,12 @@ class ProductService(
             productRepository
                 .findByProductIdentifier(productIdentifier)
                 .orElseThrow { ProductNotFoundException("Product with identifier $productIdentifier not found") }
-        return ProductDTO.convert(product)
+        return DTOConverter.convert(product)
     }
 
     fun saveProduct(dto: ProductDTO): ProductDTO {
         val product = productRepository.save(Product.convert(dto))
-        return ProductDTO.convert(product)
+        return DTOConverter.convert(product)
     }
 
     fun deleteProduct(productId: Long) {
@@ -42,7 +43,7 @@ class ProductService(
         dto: ProductDTO,
     ): ProductDTO {
         val product = findProductByIdOrThrow(id)
-        return ProductDTO.convert(
+        return DTOConverter.convert(
             productRepository.save(
                 product.copy(
                     name = dto.name.takeIf { it.isNotBlank() } ?: product.name,
@@ -54,7 +55,7 @@ class ProductService(
 
     fun getAllProductsPaged(page: Pageable): Page<ProductDTO> {
         val products = productRepository.findAll(page)
-        return products.map { ProductDTO.convert(it) }
+        return products.map { DTOConverter.convert(it) }
     }
 
     private fun findProductByIdOrThrow(productId: Long): Product =
